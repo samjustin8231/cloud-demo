@@ -1,5 +1,6 @@
-package com.example.nettydemo;
+package com.example.nettydemo.discard_server;
 
+import com.example.nettydemo.discard_server.DiscardServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.SocketChannel;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class ChildChannelHandler extends ChannelInitializer<SocketChannel> {
 
     @Override
     public void initChannel(SocketChannel socketChannel) throws Exception {
-        System.out.println("initChannel ...");
+        System.out.println("监听到 accept 事件, initChannel ...");
         socketChannel.pipeline().addLast(discardServerHandler);
     }
 }

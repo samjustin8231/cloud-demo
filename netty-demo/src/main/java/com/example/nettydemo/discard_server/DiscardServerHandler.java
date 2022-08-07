@@ -1,12 +1,13 @@
-package com.example.nettydemo;
+package com.example.nettydemo.discard_server;
 
 import com.example.nettydemo.service.BaseService;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.util.CharsetUtil;
 import io.netty.util.ReferenceCountUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -17,31 +18,25 @@ import javax.annotation.Resource;
  */
 @Component
 @ChannelHandler.Sharable
-public class DiscardServerHandler extends ChannelHandlerAdapter {
+@Slf4j
+public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
 
     @Resource
     private BaseService baseService;
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("=====> channelRead start");
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        log.info("=====> 监听到读事件...");
         try {
             ByteBuf in = (ByteBuf) msg;
-            System.out.println("传输内容是");
-            System.out.println(in.toString(CharsetUtil.UTF_8));
+            log.info("传输内容是");
+            log.info(in.toString(CharsetUtil.UTF_8));
 
             //这里调用service服务
             baseService.test();
         } finally {
             ReferenceCountUtil.release(msg);
         }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        // 出现异常就关闭
-        cause.printStackTrace();
-        ctx.close();
     }
 }
 

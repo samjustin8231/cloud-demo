@@ -1,4 +1,4 @@
-package com.example.nettydemo;
+package com.example.nettydemo.discard_server;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -39,8 +39,8 @@ public class DiscardServer {
             System.out.println("bind port success ...");
 
             //等待服务监听端口关闭
-            f.channel().closeFuture().sync();
             System.out.println("wait client connect ...");
+            f.channel().closeFuture().sync();
 
         } finally {
             //退出，释放线程资源
